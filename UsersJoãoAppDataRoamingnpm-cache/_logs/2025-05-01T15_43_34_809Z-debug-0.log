@@ -1,0 +1,18 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\João\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.3.0
+2 info using node@v22.15.0
+3 silly config load:file:C:\Users\João\AppData\Roaming\npm\node_modules\npm\npmrc
+4 silly config load:file:C:\Development\Orange HRM\primeiros-passos-cypress\.npmrc
+5 silly config load:file:C:\Users\João\.npmrc
+6 silly config load:file:C:\Users\João\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm exec cypress open
+8 verbose argv "exec" "--" "cypress" "open"
+9 verbose logfile logs-max:10 dir:C:\Development\Orange HRM\primeiros-passos-cypress\UsersJoãoAppDataRoamingnpm-cache\_logs\2025-05-01T15_43_34_809Z-
+10 verbose logfile C:\Development\Orange HRM\primeiros-passos-cypress\UsersJoãoAppDataRoamingnpm-cache\_logs\2025-05-01T15_43_34_809Z-debug-0.log
+11 silly logfile done cleaning log files
+12 verbose cwd C:\Development\Orange HRM\primeiros-passos-cypress
+13 verbose os Windows_NT 10.0.19045
+14 verbose node v22.15.0
+15 verbose npm  v11.3.0
+16 verbose exit 0
+17 info ok

@@ -1,5 +1,4 @@
 describe('Orange Hrm tests', () => {
-  // Definição correta da lista de seletores
   const selectorList = {
     usernameField: 'input[name="username"]',
     passwordField: 'input[name="password"]',
@@ -10,7 +9,7 @@ describe('Orange Hrm tests', () => {
   };
 
   it('login - Success', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+    cy.visit('/');
     cy.get(selectorList.usernameField, { timeout: 10000 }).should('be.visible').type('Admin');
     cy.get(selectorList.passwordField).should('be.visible').type('admin123');
     cy.get(selectorList.submitButton).should('be.visible').click();
@@ -19,7 +18,7 @@ describe('Orange Hrm tests', () => {
   });
 
   it('login - Failure', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+    cy.visit('/');
     cy.get(selectorList.usernameField, { timeout: 10000 }).should('be.visible').type('Admin');
     cy.get(selectorList.passwordField).should('be.visible').type('wrongpassword');
     cy.get(selectorList.submitButton).should('be.visible').click();

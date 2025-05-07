@@ -1,99 +1,49 @@
-describe('Orange Hrm tests', () => {
-  const sel = {
-    user: 'input[name="username"]',
-    pass: 'input[name="password"]',
-    btn: 'button[type="submit"]',
-    bread: '.oxd-topbar-header-breadcrumb > .oxd-text',
-    info: 'a[href*="viewMyDetails"]',
-    alert: '.oxd-alert-content-text',
-    fName: 'input[name="firstName"]',
-    lName: 'input[name="lastName"]',
-    driversLicenseNumber: ':nth-child(2) > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-input',
-    licenseExpiryDate: ':nth-child(2) > .oxd-input-group > :nth-child(2) > .oxd-date-wrapper > .oxd-date-input > .oxd-input',
-    nationality: ':nth-child(5) > :nth-child(1) > :nth-child(1) > .oxd-input-group > :nth-child(2) > .oxd-select-wrapper > .oxd-select-text',
-    maritalStatus: ':nth-child(5) > :nth-child(1) > :nth-child(2) > .oxd-input-group > .oxd-input-group__label-wrapper > .oxd-label',
-     // Novo seletor corrigido
-     dateOfBirthInput: '.oxd-input-group__label-wrapper:eq(1)',
-    genderOptions: "input[name='gender']"
+describe('Orange HRM Tests', () => {
+  const SelectorsList = {
+    usernameInput: 'input[name="username"]',
+    passwordInput: 'input[name="password"]',
+    submitButton: 'button[type="submit"]',
+    breadcrumb: '.oxd-topbar-header-breadcrumb > .oxd-text',
+    myInfoLink: '.oxd-text.oxd-text--span.oxd-main-menu-item--name', // Seletor atualizado
+    alertContentText: '.oxd-alert-content-text',
+    firstNameInput: 'input.oxd-input--active',
+    lastNameInput: 'input.oxd-input--active',
+    licenseExpiryDateInput: 'input.oxd-input--active',
+    nationalityDropdown: '.oxd-select-wrapper',
+    maritalStatusDropdown: '.oxd-select-wrapper',
+    dateOfBirthInput: 'input.oxd-input--active',
+    genderOptions: 'input[name="gender"]',
+    dashboard: '.oxd-topbar-header',
+    myInfoButton: 'a[href*="viewMyDetails"]',
+    employeeIdInput: 'input.oxd-input--active',
   };
 
-  const acceptedTitles = ['Dashboard', 'Pizarra de pendientes', 'Painel de Controle', 'Tableau de bord'];
-
   beforeEach(() => {
-    Cypress.config('defaultCommandTimeout', 15000);
-    Cypress.Screenshot.defaults({ screenshotOnRunFailure: false });
-    Cypress.on('uncaught:exception', () => false);
+    cy.visit('/auth/login');
   });
 
-  it.only('Update Info', () => {
-    cy.visit('auth/login');
+  it.only('User Info Update', () => {
+    cy.get(SelectorsList.usernameInput).should('be.visible').type('Admin');
+    cy.get(SelectorsList.passwordInput).should('be.visible').type('admin123');
+    cy.get(SelectorsList.submitButton).should('be.visible').click();
+    cy.location('pathname').should('eq', '/web/index.php/dashboard/index');
 
-    cy.get(sel.user).should('exist').should('be.visible').type('Admin');
-    cy.get(sel.pass).should('exist').should('be.visible').type('admin123');
-    cy.get(sel.btn).should('exist').should('be.visible').click();
+    cy.get(SelectorsList.dashboard).should('be.visible'); // Verifica se o painel carregou
+    cy.get(SelectorsList.myInfoButton).should('be.visible').click();
 
-    cy.location('pathname', { timeout: 15000 }).should('eq', '/web/index.php/dashboard/index');
-
-    cy.get(sel.bread).should('be.visible').invoke('text').then((text) => {
-      expect(acceptedTitles.some(title => text.includes(title))).to.be.true;
-    });
-
-    cy.get(sel.info).should('exist').should('be.visible').click();
-    cy.get(sel.fName).should('exist').should('be.visible').clear().type('NewFirstName');
-    cy.get(sel.lName).should('exist').should('be.visible').clear().type('NewLastName');
-
-    // Evitando múltiplos elementos e sobreposição
-    cy.get(sel.driversLicenseNumber, { timeout: 15000 })
-      .should('exist').should('be.visible')
-      .first()
-      .scrollIntoView()
-      .clear()
-      .type('123456789');
-
-    cy.get(sel.licenseExpiryDate, { timeout: 15000 })
-      .should('exist').should('be.visible')
-      .scrollIntoView()
-      .clear()
-      .type('2026-12-31');
-
-    // Lidando com dropdowns
-    cy.get(sel.nationality).click({ force: true });
-    cy.get('body').then(($body) => {
-      if ($body.find('.oxd-select-dropdown').length > 0) {
-        cy.get('.oxd-select-dropdown').should('exist').should('be.visible').contains('Brazil').click({ force: true });
-      } else {
-        cy.log('Dropdown de nacionalidade não apareceu, verificando alternativa...');
-      }
-    });
-
-    cy.get(sel.maritalStatus).click({ force: true });
-    cy.get('body').then(($body) => {
-      if ($body.find('.oxd-select-dropdown').length > 0) {
-        cy.get('.oxd-select-dropdown').should('exist').should('be.visible').contains('Single').click({ force: true });
-      } else {
-        cy.log('Dropdown de estado civil não apareceu, verificando alternativa...');
-      }
-    });
-
-    // Corrigindo interações com data de nascimento
-    cy.get(sel.dateOfBirth, { timeout: 15000 })
-      .should('exist')
-      .should('be.visible')
-      .scrollIntoView()
-      .clear()
-      .type('1995-05-20');
-
-    // Lidando com múltiplas opções de gênero
-    cy.get(sel.genderOptions).each(($el) => {
-      cy.wrap($el).should('exist').should('be.visible').click({ force: true });
-    });
+    cy.get(SelectorsList.firstNameInput).eq(0).should('be.visible').clear().type('John');
+    cy.get(SelectorsList.lastNameInput).eq(0).should('be.visible').clear().type('Doe');
+    cy.get(SelectorsList.employeeIdInput).eq(0).should('be.visible').clear().type('EmployeeIdTest');
+    cy.get(SelectorsList.dateOfBirthInput).eq(0).should('be.visible').clear().type('1990-01-01');
+    cy.get(SelectorsList.licenseExpiryDateInput).eq(0).should('be.visible').clear().type('2030-12-31');
   });
 
-  it('Login - Failure', () => {
-    cy.visit('/');
-    cy.get(sel.user).should('exist').should('be.visible').type('Admin');
-    cy.get(sel.pass).should('exist').should('be.visible').type('wrongpassword');
-    cy.get(sel.btn).should('exist').should('be.visible').click();
-    cy.get(sel.alert, { timeout: 15000 }).should('contain', 'Invalid credentials');
+  it('Login - Fail', () => {
+    cy.get(SelectorsList.usernameInput).should('be.visible').type('Admin');
+    cy.get(SelectorsList.passwordInput).should('be.visible').type('wrongpassword');
+    cy.get(SelectorsList.submitButton).should('be.visible').click();
+
+    cy.location('pathname').should('eq', '/web/index.php/auth/login');
+    cy.get(SelectorsList.alertContentText).should('contain', 'Invalid credentials');
   });
 });

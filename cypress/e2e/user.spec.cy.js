@@ -8,8 +8,11 @@ describe('Orange HRM tests', () => {
     dashboardGrid: ".orangehrm-dashboard",
     MyInfo: "[href='/web/index.php/pim/viewMyDetails']", 
     firstNameField: "[name='firstName']",
+    middleNameField: "[name='middleName']",
     lastNameField: "[name='lastName']",
-    EmployeeIdField: ".oxd-input--active"
+    GenericField: ".oxd-input--active",
+    DateCloseButton: ".--close",
+    submitButton:"[type='submit']",
   }; 
 
   const userData = {
@@ -31,9 +34,16 @@ describe('Orange HRM tests', () => {
     cy.location('pathname').should('eq', '/web/index.php/dashboard/index');
     cy.get(selectorsList.sectionTitleTopBar).should('contain', 'Dashboard'); 
     cy.get(selectorsList.MyInfo).should('be.visible').click();
-    cy.get(selectorsList.firstNameField).should('be.visible').clear().type('Lucas');
-    cy.get(selectorsList.lastNameField).should('be.visible').clear().type('Lima');
-    cy.get(selectorsList.EmployeeIdField).eq(4).should('be.visible').clear().type('123456');
+    cy.get(selectorsList.firstNameField).should('be.visible').clear().type('João');
+    cy.get(selectorsList.middleNameField).should('be.visible').clear().type('Victor');
+    cy.get(selectorsList.lastNameField).should('be.visible').clear().type('Alves');
+    cy.get(selectorsList.GenericField).eq(3).should('be.visible').clear().type('IDtest');
+    cy.get(selectorsList.GenericField).eq(4).should('be.visible').clear().type('otherID');
+    cy.get(selectorsList.GenericField).eq(5).should('be.visible').clear().type('driverlicense');
+    cy.get(selectorsList.GenericField).eq(6).should('be.visible').clear().type('2026-04-03');
+    cy.get(selectorsList.DateCloseButton).should('be.visible').click();
+    cy.get(selectorsList.submitButton).eq(1).should('be.visible').click();
+    cy.get('body').should('contain', 'Successfully Saved');
   });
 
   it('login - fail', () => {

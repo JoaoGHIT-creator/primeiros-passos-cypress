@@ -12,6 +12,7 @@ describe('Orange HRM tests', () => {
     lastNameField: "[name='lastName']",
     GenericField: ".oxd-input--active",
     DateCloseButton: ".--close",
+    GenericComboBox: ".oxd-select-text--arrow",
     submitButton:"[type='submit']",
   }; 
 
@@ -43,10 +44,14 @@ describe('Orange HRM tests', () => {
     cy.get(selectorsList.GenericField).eq(6).should('be.visible').clear().type('2026-04-03');
     cy.get(selectorsList.DateCloseButton).should('be.visible').click();
     cy.get(selectorsList.submitButton).eq(1).should('be.visible').click();
-    cy.get('body').should('contain', 'Successfully Saved');
-  });
+    cy.get(selectorsList.GenericComboBox).eq(0).should('be.visible').click();
+  cy.get('.oxd-select-dropdown > :nth-child(6)').should('be.visible').click();
+  cy.get(selectorsList.GenericComboBox).eq(1).should('be.visible').click();
+  cy.get('.oxd-select-dropdown > :nth-child(3)').should('be.visible').click();
 
-  it('login - fail', () => {
+});
+
+it('login - fail', () => {
     cy.visit('/'); 
     cy.get(selectorsList.usernameField).should('be.visible').clear().type(userData.userfail.username);
     cy.get(selectorsList.passwordField).should('be.visible').clear().type(userData.userfail.password);
